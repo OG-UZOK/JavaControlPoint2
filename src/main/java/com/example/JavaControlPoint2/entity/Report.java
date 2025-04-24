@@ -28,10 +28,6 @@ public class Report {
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    @CreationTimestamp
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
     @OneToMany(mappedBy = "report", cascade = CascadeType.ALL)
     private List<ReportEntry> entries = new ArrayList<>();
 }

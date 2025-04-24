@@ -21,7 +21,7 @@ public class ExchangeRateUpdater {
     @Value("${cbr.xml.url}")
     private String cbrUrl;
 
-    @Scheduled(fixedDelay = 60_000)
+    @Scheduled(fixedDelayString = "${cbr.xml.period}")
     public void updateRates() {
         CbrResponse response = restTemplate.getForObject(cbrUrl, CbrResponse.class);
 

@@ -4,6 +4,7 @@ import com.example.JavaControlPoint2.dto.output.EmployeeOutput;
 import com.example.JavaControlPoint2.dto.output.EmployeesId;
 import com.example.JavaControlPoint2.dto.output.ReportCurrencyOutput;
 import com.example.JavaControlPoint2.dto.output.ReportsOutput;
+import com.example.JavaControlPoint2.entity.Report;
 import com.example.JavaControlPoint2.service.ReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -28,4 +29,8 @@ public class ReportController {
         return ResponseEntity.ok(reportService.getReportByIdInCurrency(id, currency));
     }
 
+    @PatchMapping("/{id}/refresh")
+    public ResponseEntity<Report> refreshReport(@PathVariable UUID id) {
+        return ResponseEntity.ok(reportService.refreshReport(id));
+    }
 }
