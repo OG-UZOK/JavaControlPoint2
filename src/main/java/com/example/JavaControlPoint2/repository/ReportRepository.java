@@ -12,7 +12,4 @@ import java.util.UUID;
 public interface ReportRepository extends JpaRepository<Report, UUID> {
     @Query("SELECT SUM(r.hours) FROM Report r WHERE r.employee.id = :employeeId")
     Double findTotalHoursByEmployeeId(@Param("employeeId") UUID employeeId);
-
-    @Query("SELECT r.id, r.startDate, r.endDate FROM Report r")
-    List<ReportsOutput> findAllReports();
 }

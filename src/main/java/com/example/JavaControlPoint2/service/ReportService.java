@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,7 +23,12 @@ public class ReportService {
     private final ExchangeRateRepository exchangeRateRepository;
 
     public List<ReportsOutput> getReports() {
-        return reportRepository.findAllReports();
+        List<Report> reportList = reportRepository.findAll();
+        List<ReportsOutput> reportsOutputs = new ArrayList<>();
+        for (Report report: reportList) {
+            reportsOutputs.add(new ReportsOutput(report.getId(), report.getStartDate(), report.getEndDate()));
+        }
+        return reportsOutputs;
     }
 
     @SneakyThrows

@@ -4,6 +4,8 @@ import com.example.JavaControlPoint2.dto.output.CbrResponse;
 import com.example.JavaControlPoint2.entity.ExchangeRate;
 import com.example.JavaControlPoint2.repository.ExchangeRateRepository;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -11,15 +13,18 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDateTime;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ExchangeRateUpdater {
     private final ExchangeRateRepository repository;
     private final RestTemplate restTemplate;
 
+    @Value("${cbr.xml.url}")
+    private String cbrUrl;
+
     @Scheduled(fixedDelay = 60_000)
     public void updateRates() {
-        String apiUrl = "https://www.cbr-xml-daily.ru/latest.js";
-        CbrResponse response = restTemplate.getForObject(apiUrl, CbrResponse.class);
+        //String apiUrl = "https://www.cbr-xml-daily.ru/latest.js";
+        CbrResponse response = restTemplate.getForObject(cbrUrl, CbrResponse.class);
 
         if (response != null) {
             response.rates().forEach((currency, rate) -> {
