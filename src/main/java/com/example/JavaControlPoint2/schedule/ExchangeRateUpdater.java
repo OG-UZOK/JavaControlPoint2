@@ -23,7 +23,6 @@ public class ExchangeRateUpdater {
 
     @Scheduled(fixedDelay = 60_000)
     public void updateRates() {
-        //String apiUrl = "https://www.cbr-xml-daily.ru/latest.js";
         CbrResponse response = restTemplate.getForObject(cbrUrl, CbrResponse.class);
 
         if (response != null) {

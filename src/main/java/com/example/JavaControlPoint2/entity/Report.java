@@ -4,31 +4,34 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
+@Table(name = "reports")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "reports")
 public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "start_date")
+    @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
 
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    @ManyToOne
-    @JoinColumn(name = "employee_id")
-    private Employee employee;
+    @CreationTimestamp
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
-    private Double hours;
-
-    private Double salary;
+    @OneToMany(mappedBy = "report", cascade = CascadeType.ALL)
+    private List<ReportEntry> entries = new ArrayList<>();
 }

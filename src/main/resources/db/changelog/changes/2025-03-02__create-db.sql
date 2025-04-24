@@ -29,9 +29,31 @@ CREATE TABLE exchange_rates (
 -- Создание таблицы "reports"
 CREATE TABLE reports (
      id UUID PRIMARY KEY,
-     start_date DATE,
+     start_date DATE NOT NULL,
      end_date DATE,
-     employee_id UUID REFERENCES employees(id),
-     hours DOUBLE PRECISION,
-     salary DOUBLE PRECISION
+     created_at TIMESTAMP
 );
+
+-- changeset Ivan:5
+-- Создание таблицы report_entries
+CREATE TABLE report_entries (
+    id UUID PRIMARY KEY,
+    report_id UUID NOT NULL,
+    employee_id UUID NOT NULL,
+    hours DOUBLE PRECISION,
+    salary DOUBLE PRECISION
+);
+
+-- Внешние ключи
+ALTER TABLE report_entries
+    ADD CONSTRAINT fk_entry_report
+        FOREIGN KEY (report_id) REFERENCES reports(id) ON DELETE CASCADE;
+
+ALTER TABLE report_entries
+    ADD CONSTRAINT fk_entry_employee
+        FOREIGN KEY (employee_id) REFERENCES employees(id);
+
+-- Индексы для ускорения поиска
+CREATE INDEX idx_report_entries_report_id ON report_entries(report_id);
+CREATE INDEX idx_report_entries_employee_id ON report_entries(employee_id);
+CREATE INDEX idx_reports_date_range ON reports(start_date, end_date);
